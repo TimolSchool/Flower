@@ -43,7 +43,17 @@ h2 { margin-bottom: .15rem; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height:
 .cloud-two { top: 8rem; right: 9%; transform: scale(.65); opacity: .65; }
 .flower-stage { position: relative; z-index: 1; display: grid; place-items: end center; flex: 1; min-height: 20rem; padding-top: 9rem; }
 .soil { width: 72%; height: 2.3rem; border-radius: 50% 50% 45% 45%; background: #9a684a; box-shadow: inset 0 .45rem #83533d, 0 .3rem 0 rgba(77, 61, 43, .1); }
+.seed { position: absolute; z-index: 3; bottom: 2rem; width: 1.55rem; height: 2.1rem; border-radius: 65% 35% 55% 45%; background: #805337; transform: rotate(24deg); box-shadow: inset -.25rem -.2rem #65412e; transition: opacity .4s, transform .5s; }
+.seed[data-stage="sprout"], .seed[data-stage="flower"] { opacity: 0; transform: translateY(.8rem) rotate(24deg) scale(.7); }
+.sprout { position: absolute; z-index: 3; bottom: 2rem; width: 5.5rem; height: 8rem; transition: opacity .4s, transform .5s; }
+.sprout[data-stage="seed"] { opacity: 0; transform: translateY(1rem) scale(.6); }
+.sprout[data-stage="flower"] { opacity: 0; transform: translateY(-1rem) scale(.85); }
+.sprout-stem { position: absolute; bottom: 0; left: 2.55rem; width: .48rem; height: 6.2rem; border-radius: 1rem; background: #4f965c; }
+.sprout-leaf { position: absolute; bottom: 3.5rem; width: 2.8rem; height: 1.3rem; border-radius: 100% 0 100% 0; background: #63ae69; }
+.sprout-leaf-left { left: .2rem; transform: rotate(18deg); }
+.sprout-leaf-right { right: .15rem; transform: rotate(162deg); }
 .flower { position: absolute; bottom: 1.3rem; width: 8.5rem; height: 13rem; transform-origin: bottom center; animation: sway 5s ease-in-out infinite; transition: transform .5s ease; }
+.flower[data-stage="seed"], .flower[data-stage="sprout"] { opacity: 0; pointer-events: none; transform: translateY(1rem) scale(.65); }
 .flower[data-health="happy"] { transform: scale(1.08); }
 .flower[data-health="sad"] { transform: rotate(-5deg) scale(.85); filter: saturate(.7); }
 .stem { position: absolute; z-index: 1; bottom: .6rem; left: 3.8rem; width: .65rem; height: 8rem; border-radius: 1rem; background: var(--green); transform: rotate(3deg); }
@@ -90,5 +100,6 @@ h2 { margin-bottom: .15rem; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height:
 .tip { margin: 1.35rem 0 0; color: var(--muted); font: .8rem/1.45 "Trebuchet MS", sans-serif; }
 @keyframes sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
 @keyframes pop { 0% { opacity: .4; transform: translateY(4px); } 100% { opacity: 1; transform: translateY(0); } }
-@media (max-width: 700px) { .page { width: min(100% - 1.25rem, 34rem); padding-top: 1.25rem; } .game { grid-template-columns: 1fr; } .garden-card { min-height: 31rem; } .flower-stage { min-height: 18rem; } }
+@media (max-width: 700px) { .page { width: calc(100% - 1rem); padding-top: 1rem; } .topbar { align-items: center; } .game { grid-template-columns: 1fr; } .garden-card { min-height: 31rem; } .flower-stage { min-height: 18rem; } .care-card { padding: 1.1rem; } }
+@media (max-width: 390px) { .topbar { display: block; } .sun-badge { width: max-content; margin-top: .8rem; } h1 { font-size: 2.3rem; } .garden-copy { padding: 1.15rem; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

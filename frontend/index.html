@@ -11,7 +11,6 @@
     <div class="page">
       <header class="topbar">
         <div>
-          <p class="eyebrow">Jardin secret · Jour <span id="day">1</span></p>
           <h1>Fais grandir ta fleur.</h1>
         </div>
         <div class="sun-badge" aria-label="Vitalité de la fleur">
@@ -29,7 +28,12 @@
             <span class="sun"></span>
           </div>
           <div class="flower-stage">
-            <div class="flower-shadow"></div>
+            <div class="seed" id="seed" aria-hidden="true"></div>
+            <div class="sprout" id="sprout" aria-hidden="true">
+              <span class="sprout-stem"></span>
+              <span class="sprout-leaf sprout-leaf-left"></span>
+              <span class="sprout-leaf sprout-leaf-right"></span>
+            </div>
             <div class="flower" id="flower" aria-label="Ta fleur">
               <div class="petals">
                 <span></span><span></span><span></span><span></span>
@@ -43,8 +47,8 @@
             <div class="soil"></div>
           </div>
           <div class="garden-copy">
-            <p class="status-label" id="status-label">Elle a bonne mine</p>
-            <h2 id="flower-title">Bonjour, petite fleur.</h2>
+            <p class="status-label" id="status-label">Une graine attend</p>
+            <h2 id="flower-title">Bonjour, petite graine.</h2>
             <p id="result" class="result" role="status" aria-live="polite">
               Un peu d’attention et elle s’épanouira.
             </p>
@@ -62,11 +66,11 @@
 
           <div class="meters">
             <div class="meter-row">
-              <div class="meter-label"><span aria-hidden="true">💧</span><strong>Eau</strong><span id="water-value">58%</span></div>
+              <div class="meter-label"><span aria-hidden="true">💧</span><strong>Eau</strong><span id="water-value">0%</span></div>
               <div class="meter-track"><span id="water-bar" class="meter-fill water-fill"></span></div>
             </div>
             <div class="meter-row">
-              <div class="meter-label"><span aria-hidden="true">☀</span><strong>Lumière</strong><span id="sun-value">66%</span></div>
+              <div class="meter-label"><span aria-hidden="true">☀</span><strong>Lumière</strong><span id="sun-value">0%</span></div>
               <div class="meter-track"><span id="sun-bar" class="meter-fill sun-fill"></span></div>
             </div>
           </div>
@@ -74,11 +78,11 @@
           <div class="actions">
             <button class="action-button water-action" id="water-button" type="button">
               <span class="action-icon" aria-hidden="true">♒</span>
-              <span><strong>Arroser</strong><small>+18 eau</small></span>
+              <span><strong>Arroser</strong><small>+20 eau</small></span>
             </button>
             <button class="action-button light-action" id="sun-button" type="button">
               <span class="action-icon" aria-hidden="true">☼</span>
-              <span><strong>Au soleil</strong><small>+16 lumière</small></span>
+              <span><strong>Au soleil</strong><small>+20 lumière</small></span>
             </button>
           </div>
           <p class="tip" id="tip">Les deux jauges entre 40% et 85% donnent le meilleur équilibre.</p>

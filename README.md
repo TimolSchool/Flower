@@ -2,7 +2,7 @@
 
 Petit jeu web responsive dans lequel le joueur prend soin d'une fleur. Il peut l'arroser et lui donner de la lumière pour maintenir son équilibre et faire progresser sa vitalité.
 
-Le jeu et sa progression sont gérés côté frontend et sauvegardés dans le `localStorage` du navigateur. Le backend Express sert les fichiers statiques et conserve la route `/api/verify` disponible pour les évolutions futures.
+Le jeu et sa progression sont gérés côté frontend et sauvegardés dans le `localStorage` du navigateur. La fleur commence comme une graine, devient une pousse, puis fleurit lorsque l'eau et la lumière progressent ensemble jusqu'à 100 %.
 
 ## Lancer en local
 
@@ -25,9 +25,9 @@ AWS propose plusieurs familles d’hébergement. Pour **ce** projet (pages stati
 - **API Gateway + AWS Lambda** : la route `/api/verify` sans serveur à gérer.
 - Idéal si tu veux rester proche du dépôt GitHub et payer à l’usage.
 
-### 2. Le plus simple en un seul service — AWS App Runner
+### 2. Serveur utilisé — AWS Lightsail
 
-Tu déploies le **Dockerfile** (ou le dépôt Node). App Runner expose HTTPS, met à l’échelle et lit `PORT`. Front et back restent ensemble, comme en local.
+Le Dockerfile fait tourner le frontend et le backend ensemble sur le serveur Lightsail. Le conteneur écoute en interne sur le port `8080`, publié sur le port HTTP `80`.
 
 ### 3. Classique et économique pour le front — Amazon S3 + CloudFront
 
@@ -72,12 +72,14 @@ Inutile pour l’instant : ce site est du HTML/CSS/JS statique + une API JSON.
 
 **Route 53** peut pointer un nom de domaine vers n’importe laquelle de ces cibles. **ACM** fournit le certificat TLS.
 
-## Déploiement App Runner (exemple)
+## Accès mobile depuis Lightsail
 
-1. Pousse ce dépôt sur GitHub.
-2. Console AWS → App Runner → source GitHub ou image Docker.
-3. Commande de démarrage : `npm start` (ou image Docker, port **8080**).
-4. Variable d’environnement : `SECRET_WORD=fleur` si la route API de vérification est utilisée.
+Dans la page de l'instance Lightsail, onglet **Networking**, vérifie que le pare-feu IPv4 autorise :
+
+- TCP `80` pour le site HTTP
+- TCP `443` lorsque HTTPS sera configuré
+
+Utilise l'adresse **Public IPv4** ou, de préférence, une adresse IPv4 statique. Une adresse privée `172.x.x.x` ne fonctionne pas depuis un téléphone.
 
 ## Mettre à jour le jeu sur Lightsail
 
