@@ -23,8 +23,8 @@
       <main class="game" aria-label="Jeu de soin de la fleur">
         <section class="garden-card" aria-labelledby="flower-title">
           <div class="sky" aria-hidden="true">
-            <span class="cloud cloud-one"></span>
-            <span class="cloud cloud-two"></span>
+            <span class="cloud cloud-one" data-cloud="one"></span>
+            <span class="cloud cloud-two" data-cloud="two"></span>
             <span class="sun"></span>
           </div>
           <div class="flower-stage">
@@ -75,17 +75,7 @@
             </div>
           </div>
 
-          <div class="actions">
-            <button class="action-button water-action" id="water-button" type="button">
-              <span class="action-icon" aria-hidden="true">♒</span>
-              <span><strong>Arroser</strong><small>+20 eau</small></span>
-            </button>
-            <button class="action-button light-action" id="sun-button" type="button">
-              <span class="action-icon" aria-hidden="true">☼</span>
-              <span><strong>Au soleil</strong><small>+20 lumière</small></span>
-            </button>
-          </div>
-          <p class="tip" id="tip">Les deux jauges entre 40% et 85% donnent le meilleur équilibre.</p>
+          <p class="tip" id="tip">Déplace les nuages pour laisser entrer la lumière du soleil.</p>
         </section>
       </main>
     </div>

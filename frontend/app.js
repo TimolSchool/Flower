@@ -1,7 +1,7 @@
-const waterButton = document.getElementById("water-button");
-const sunButton = document.getElementById("sun-button");
 const result = document.getElementById("result");
 const tip = document.getElementById("tip");
+const sky = document.querySelector(".sky");
+const clouds = document.querySelectorAll(".cloud");
 const stateKey = "flower-care-state-v2";
 
 const defaultState = {
@@ -81,24 +81,60 @@ function updateView(message) {
     tip.textContent = "La pousse grandit. Continue les deux soins pour faire apparaître les pétales.";
   } else if (health >= 80) {
     tip.textContent = "Tout est parfait. Ta fleur est prête à s'épanouir !";
+  } else if (state.sunlight < 100) {
+    tip.textContent = "Déplace les nuages pour laisser entrer la lumière du soleil.";
   } else {
     tip.textContent = "Les deux jauges entre 40% et 85% donnent le meilleur équilibre.";
   }
 }
 
-function care(type) {
-  if (type === "water") {
-    state.water = clamp(state.water + 20);
-    updateView("Il est important de boire régulièrement");
-  } else {
-    state.sunlight = clamp(state.sunlight + 20);
-    updateView("Ya un grand soleil, on va pique-niquer");
-  }
-  state.careCount += 1;
-  saveState();
-  updateView();
+function moveCloud(cloud) {
+  let dragging = false;
+  let moved = false;
+  let startX = 0;
+  let startLeft = 0;
+
+  cloud.addEventListener("pointerdown", (event) => {
+    dragging = true;
+    moved = false;
+    startX = event.clientX;
+    startLeft = cloud.offsetLeft;
+    cloud.setPointerCapture(event.pointerId);
+    cloud.classList.add("is-dragging");
+  });
+
+  cloud.addEventListener("pointermove", (event) => {
+    if (!dragging) return;
+    const nextLeft = startLeft + event.clientX - startX;
+    const maxLeft = sky.clientWidth - cloud.offsetWidth;
+    const boundedLeft = Math.max(0, Math.min(maxLeft, nextLeft));
+    if (Math.abs(nextLeft - startLeft) > 8) moved = true;
+    cloud.style.left = `${boundedLeft}px`;
+    cloud.style.right = "auto";
+  });
+
+  cloud.addEventListener("pointerup", () => {
+    if (!dragging) return;
+    dragging = false;
+    cloud.classList.remove("is-dragging");
+    if (!moved) return;
+    const cloudCenter = cloud.offsetLeft + cloud.offsetWidth / 2;
+    const flowerCenter = sky.clientWidth / 2;
+    const isOverFlower = Math.abs(cloudCenter - flowerCenter) < sky.clientWidth * 0.18;
+    const message = isOverFlower
+      ? "Il est important de boire régulièrement"
+      : "Ya un grand soleil, on va pique-niquer";
+    if (isOverFlower) {
+      state.water = clamp(state.water + 20);
+    } else {
+      state.sunlight = clamp(state.sunlight + 20);
+    }
+    state.careCount += 1;
+    saveState();
+    updateView(message);
+  });
 }
 
-waterButton.addEventListener("click", () => care("water"));
-sunButton.addEventListener("click", () => care("sun"));
+clouds.forEach(moveCloud);
+
 updateView();
