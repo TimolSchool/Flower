@@ -160,17 +160,37 @@ function moveCloud(cloud) {
 clouds.forEach(moveCloud);
 
 function startSun() {
-  if (astro.classList.contains("sun")) return;
-  astro.classList.remove("moon");
-  astro.classList.add("sun");
-  astro.setAttribute("aria-label", "Soleil à déplacer");
-  updateView("Ya un grand soleil, on va pique-niquer");
-  sunInterval = window.setInterval(() => {
-    if (state.sunlight >= 100) return;
-    state.sunlight = clamp(state.sunlight + 5);
-    saveState();
-    updateView();
-  }, 1200);
+  if (!astro.classList.contains("sun")) {
+    astro.classList.remove("moon");
+    astro.classList.add("sun");
+    astro.setAttribute("aria-label", "Soleil à déplacer");
+    updateView("Ya un grand soleil, on va pique-niquer");
+  }
+  if (!sunInterval) {
+    sunInterval = window.setInterval(() => {
+      if (state.sunlight >= 100) return;
+      state.sunlight = clamp(state.sunlight + 5);
+      saveState();
+      updateView();
+    }, 1200);
+  }
+}
+
+function setAstroSide() {
+  const astroCenter = astro.offsetLeft + astro.offsetWidth / 2;
+  const isSunSide = astroCenter >= sky.clientWidth / 2;
+  if (isSunSide) {
+    startSun();
+    return;
+  }
+  astro.classList.remove("sun");
+  astro.classList.add("moon");
+  astro.setAttribute("aria-label", "Lune à déplacer");
+  if (sunInterval) {
+    window.clearInterval(sunInterval);
+    sunInterval = null;
+  }
+  updateView("La lune veille sur le jardin.");
 }
 
 let astroDragging = false;
@@ -201,14 +221,14 @@ astro.addEventListener("pointermove", (event) => {
   astro.style.top = `${Math.max(0, Math.min(maxTop, nextTop))}px`;
   astro.style.right = "auto";
   astroMoved = Math.abs(event.clientX - astroStartX) > 6 || Math.abs(event.clientY - astroStartY) > 6;
-  if (astroMoved) startSun();
+  if (astroMoved) setAstroSide();
 });
 
 astro.addEventListener("pointerup", () => {
   if (!astroDragging) return;
   astroDragging = false;
   astro.classList.remove("is-dragging");
-  if (!astroMoved) startSun();
+  if (!astroMoved) setAstroSide();
 });
 
 astro.addEventListener("keydown", (event) => {
