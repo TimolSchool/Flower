@@ -51,7 +51,7 @@ h2 { margin-bottom: .15rem; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height:
 .leaf-left { left: 1.25rem; transform: rotate(20deg); }
 .leaf-right { right: 1rem; bottom: 6rem; transform: rotate(160deg); }
 .petals { position: absolute; z-index: 3; top: .6rem; left: 1.25rem; width: 6rem; height: 6rem; }
-.petals span { position: absolute; width: 2.65rem; height: 3.7rem; border-radius: 60% 60% 45% 45%; background: var(--pink); transform-origin: bottom center; box-shadow: inset -.3rem -.25rem rgba(180, 74, 100, .12); }
+.petals span { position: absolute; width: 2.85rem; height: 3.85rem; border-radius: 60% 60% 45% 45%; background: var(--pink); transform-origin: bottom center; box-shadow: inset -.3rem -.25rem rgba(180, 74, 100, .12); }
 .petals span:nth-child(1) { left: 1.7rem; top: 0; transform: rotate(0deg); }
 .petals span:nth-child(2) { left: 3rem; top: .8rem; transform: rotate(45deg); }
 .petals span:nth-child(3) { left: 3.1rem; top: 2.2rem; transform: rotate(90deg); }
@@ -60,7 +60,7 @@ h2 { margin-bottom: .15rem; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height:
 .petals span:nth-child(6) { left: -.1rem; top: 1.5rem; transform: rotate(225deg); }
 .petals span:nth-child(7) { left: .1rem; top: .3rem; transform: rotate(270deg); }
 .petals span:nth-child(8) { left: 1rem; top: -.2rem; transform: rotate(315deg); }
-.flower-center { position: absolute; z-index: 4; top: 2.35rem; left: 2.75rem; width: 2.7rem; height: 2.7rem; border-radius: 50%; background: #f7c95e; box-shadow: inset -.35rem -.25rem #dda93b; }
+.flower-center { position: absolute; z-index: 4; top: 2.15rem; left: 2.55rem; width: 3.1rem; height: 3.1rem; border-radius: 50%; background: #f7c95e; box-shadow: inset -.35rem -.25rem #dda93b; }
 .garden-copy { position: relative; z-index: 2; padding: 1.35rem 1.5rem 1.5rem; background: rgba(255, 255, 255, .7); }
 .status-label { display: inline-block; margin: 0 0 .55rem; padding: .3rem .65rem; border-radius: 2rem; background: #e5f3e5; color: var(--green); font: 700 .7rem "Trebuchet MS", sans-serif; text-transform: uppercase; letter-spacing: .08em; }
 .result { min-height: 1.5rem; margin: .45rem 0 0; color: var(--muted); font-size: 1rem; }
