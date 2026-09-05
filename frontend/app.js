@@ -56,6 +56,19 @@ function showRain() {
   window.setTimeout(() => sky.classList.remove("raining"), 1300);
 }
 
+function mergeClouds() {
+  if (sky.classList.contains("clouds-merged")) return;
+  sky.classList.add("clouds-merged");
+  const mainCloud = sky.querySelector(".cloud-one");
+  mainCloud.style.left = "calc(50% - 3.8rem)";
+  mainCloud.style.right = "auto";
+  state.water = clamp(state.water + 20);
+  state.careCount += 1;
+  saveState();
+  showRain();
+  updateView("Il est important de boire régulièrement");
+}
+
 function updateView(message) {
   const health = getHealth();
   const flower = document.getElementById("flower");
@@ -128,6 +141,14 @@ function moveCloud(cloud) {
     const cloudCenter = boundedLeft + cloud.offsetWidth / 2;
     const flowerCenter = sky.clientWidth / 2;
     const isOverFlower = Math.abs(cloudCenter - flowerCenter) < sky.clientWidth * 0.18;
+    const otherCloud = [...clouds].find((candidate) => candidate !== cloud);
+    const cloudRect = cloud.getBoundingClientRect();
+    const otherRect = otherCloud.getBoundingClientRect();
+    const merged = cloudRect.left < otherRect.right && cloudRect.right > otherRect.left;
+    if (merged) {
+      mergeClouds();
+      return;
+    }
     if (moved && !isOverFlower && !sunlightGranted) {
       sunlightGranted = true;
       state.sunlight = clamp(state.sunlight + 20);
@@ -148,12 +169,7 @@ function moveCloud(cloud) {
     const otherRect = otherCloud.getBoundingClientRect();
     const merged = cloudRect.left < otherRect.right && cloudRect.right > otherRect.left;
     if (!merged) return;
-
-    state.water = clamp(state.water + 20);
-    state.careCount += 1;
-    saveState();
-    showRain();
-    updateView("Il est important de boire régulièrement");
+    mergeClouds();
   });
 }
 
