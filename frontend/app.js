@@ -89,10 +89,10 @@ function updateView(message) {
 function care(type) {
   if (type === "water") {
     state.water = clamp(state.water + 20);
-    updateView("Glou glou ! La terre se gorge doucement d'eau.");
+    updateView("Il est important de boire régulièrement");
   } else {
     state.sunlight = clamp(state.sunlight + 20);
-    updateView("Les pétales se tournent vers la lumière.");
+    updateView("Ya un grand soleil, on va pique-niquer");
   }
   state.careCount += 1;
   saveState();
