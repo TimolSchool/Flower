@@ -114,3 +114,21 @@ h2 { margin-bottom: .15rem; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height:
 @media (max-width: 700px) { .page { width: calc(100% - 1rem); padding-top: 1rem; } .topbar { align-items: center; } .game { grid-template-columns: 1fr; } .garden-card { min-height: 31rem; } .flower-stage { min-height: 18rem; } .care-card { padding: 1.1rem; } }
 @media (max-width: 390px) { .topbar { display: block; } .sun-badge { width: max-content; margin-top: .8rem; } h1 { font-size: 2.3rem; } .garden-copy { padding: 1.15rem; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* The supplied artwork is the source of truth for all four growth stages. */
+.flower { position: absolute; bottom: .3rem; left: 50%; width: 12rem; height: 18rem; transform: translateX(-50%); transition: transform .45s ease, opacity .45s ease; }
+.flower[data-health="happy"] { transform: translateX(-50%) scale(1.04); }
+.flower[data-health="sad"] { transform: translateX(-50%) scale(.96); filter: saturate(.82); }
+.flower-image { position: absolute; inset: 0; display: none; background-image: url("/tkt.jpg"); background-repeat: no-repeat; background-size: 400% 100%; background-blend-mode: multiply; mix-blend-mode: multiply; }
+.flower-state-one { background-position: 0 0; }
+.flower-state-two { background-position: 33.333% 0; }
+.flower-state-three { background-position: 66.666% 0; }
+.flower-state-four { background-position: 100% 0; }
+.flower[data-stage="seed"] .flower-state-one,
+.flower[data-stage="sprout"] .flower-state-two,
+.flower[data-stage="bud"] .flower-state-three,
+.flower[data-stage="flower"] .flower-state-four { display: block; }
+.flower[data-stage="seed"],
+.flower[data-stage="sprout"],
+.flower[data-stage="bud"],
+.flower[data-stage="flower"] { opacity: 1; pointer-events: none; }

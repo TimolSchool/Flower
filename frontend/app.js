@@ -39,8 +39,9 @@ function getHealth() {
 
 function getGrowthStage() {
   const progress = Math.min(state.water, state.sunlight);
-  if (progress >= 80) return "flower";
-  if (progress >= 35) return "sprout";
+  if (progress >= 75) return "flower";
+  if (progress >= 50) return "bud";
+  if (progress >= 25) return "sprout";
   return "seed";
 }
 
@@ -69,24 +70,30 @@ function mergeClouds() {
   updateView("Il est important de boire régulièrement");
 }
 
+function splitClouds() {
+  if (!sky.classList.contains("clouds-merged")) return;
+  sky.classList.remove("clouds-merged");
+  clouds[0].style.left = "";
+  clouds[0].style.right = "";
+  clouds[1].style.left = "";
+  clouds[1].style.right = "";
+  updateView("Les nuages se séparent.");
+}
+
 function updateView(message) {
   const health = getHealth();
   const flower = document.getElementById("flower");
-  const sprout = document.getElementById("sprout");
-  const seed = document.getElementById("seed");
   const statusLabel = document.getElementById("status-label");
   const stage = getGrowthStage();
-  const status = stage === "flower" ? (health >= 80 ? "Elle rayonne" : "Elle fleurit") : stage === "sprout" ? "Une pousse apparaît" : "Une graine attend";
+  const status = stage === "flower" ? (health >= 80 ? "Elle rayonne" : "Elle fleurit") : stage === "bud" ? "Le bouton s'ouvre" : stage === "sprout" ? "Une pousse apparaît" : "Une graine attend";
 
   updateMeter("water", state.water);
   updateMeter("sun", state.sunlight);
   document.getElementById("health").textContent = health;
   document.getElementById("streak").textContent = `${state.careCount} ${state.careCount === 1 ? "soin" : "soins"}`;
   statusLabel.textContent = status;
-  document.getElementById("flower-title").textContent = stage === "flower" ? "Bonjour, petite fleur." : stage === "sprout" ? "Une vie prend racine." : "Bonjour, petite graine.";
+  document.getElementById("flower-title").textContent = stage === "flower" ? "Bonjour, petite fleur." : stage === "bud" ? "Les pétales se préparent." : stage === "sprout" ? "Une vie prend racine." : "Bonjour, petite graine.";
   flower.dataset.stage = stage;
-  sprout.dataset.stage = stage;
-  seed.dataset.stage = stage;
   flower.dataset.health = health >= 80 ? "happy" : health < 45 ? "sad" : "steady";
 
   if (message) {
@@ -101,6 +108,8 @@ function updateView(message) {
     tip.textContent = "Arrose la graine et offre-lui de la lumière pour réveiller la vie sous la terre.";
   } else if (stage === "sprout") {
     tip.textContent = "La pousse grandit. Continue les deux soins pour faire apparaître les pétales.";
+  } else if (stage === "bud") {
+    tip.textContent = "Le bouton est presque prêt. Encore un peu d'eau et de lumière.";
   } else if (health >= 80) {
     tip.textContent = "Tout est parfait. Ta fleur est prête à s'épanouir !";
   } else if (state.sunlight < 100) {
@@ -162,6 +171,10 @@ function moveCloud(cloud) {
     if (!dragging) return;
     dragging = false;
     cloud.classList.remove("is-dragging");
+    if (!moved && sky.classList.contains("clouds-merged")) {
+      splitClouds();
+      return;
+    }
     if (!moved) return;
 
     const otherCloud = [...clouds].find((candidate) => candidate !== cloud);
