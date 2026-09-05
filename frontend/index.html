@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#2f5d3a" />
+    <title>Le mot secret</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <p class="eyebrow">Jardin secret</p>
+        <h1>Trouve le mot</h1>
+        <p class="lede">
+          Choisis un mot, puis envoie-le au serveur. La vérification se fait
+          uniquement côté backend.
+        </p>
+      </header>
+
+      <main>
+        <form id="secret-form" class="card" autocomplete="off">
+          <label for="word">Mot secret</label>
+          <div class="field">
+            <input
+              id="word"
+              name="word"
+              type="text"
+              inputmode="text"
+              enterkeyhint="done"
+              maxlength="64"
+              placeholder="Écris ou sélectionne un mot"
+              list="word-ideas"
+              required
+              aria-describedby="hint"
+            />
+            <datalist id="word-ideas">
+              <option value="rosée"></option>
+              <option value="pétale"></option>
+              <option value="jardin"></option>
+              <option value="printemps"></option>
+              <option value="sève"></option>
+            </datalist>
+          </div>
+          <p id="hint" class="hint">
+            Suggestions facultatives — le mot à trouver n’est pas forcément dans
+            la liste.
+          </p>
+          <button type="submit" id="submit">Vérifier</button>
+          <p id="result" class="result" role="status" aria-live="polite"></p>
+        </form>
+      </main>
+    </div>
+    <script src="/app.js"></script>
+  </body>
+</html>
