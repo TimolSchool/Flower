@@ -2,6 +2,7 @@ const result = document.getElementById("result");
 const tip = document.getElementById("tip");
 const sky = document.querySelector(".sky");
 const clouds = document.querySelectorAll(".cloud");
+const astro = document.getElementById("astro");
 const stateKey = "flower-care-state-v2";
 
 const defaultState = {
@@ -12,6 +13,7 @@ const defaultState = {
 };
 
 let state = loadState();
+let sunInterval = null;
 
 function loadState() {
   try {
@@ -45,6 +47,13 @@ function getGrowthStage() {
 function updateMeter(name, value) {
   document.getElementById(`${name}-value`).textContent = `${value}%`;
   document.getElementById(`${name}-bar`).style.width = `${value}%`;
+}
+
+function showRain() {
+  sky.classList.remove("raining");
+  void sky.offsetWidth;
+  sky.classList.add("raining");
+  window.setTimeout(() => sky.classList.remove("raining"), 1300);
 }
 
 function updateView(message) {
@@ -82,7 +91,9 @@ function updateView(message) {
   } else if (health >= 80) {
     tip.textContent = "Tout est parfait. Ta fleur est prête à s'épanouir !";
   } else if (state.sunlight < 100) {
-    tip.textContent = "Déplace les nuages pour laisser entrer la lumière du soleil.";
+    tip.textContent = astro.classList.contains("sun")
+      ? "Le soleil recharge la fleur automatiquement."
+      : "Déplace la lune pour faire apparaître le soleil.";
   } else {
     tip.textContent = "Les deux jauges entre 40% et 85% donnent le meilleur équilibre.";
   }
@@ -131,16 +142,80 @@ function moveCloud(cloud) {
     dragging = false;
     cloud.classList.remove("is-dragging");
     if (!moved) return;
-    if (!moved) {
-      state.water = clamp(state.water + 20);
-      state.careCount += 1;
-      saveState();
-      updateView("Il est important de boire régulièrement");
-      return;
-    }
+
+    const otherCloud = [...clouds].find((candidate) => candidate !== cloud);
+    const cloudRect = cloud.getBoundingClientRect();
+    const otherRect = otherCloud.getBoundingClientRect();
+    const merged = cloudRect.left < otherRect.right && cloudRect.right > otherRect.left;
+    if (!merged) return;
+
+    state.water = clamp(state.water + 20);
+    state.careCount += 1;
+    saveState();
+    showRain();
+    updateView("Il est important de boire régulièrement");
   });
 }
 
 clouds.forEach(moveCloud);
+
+function startSun() {
+  if (astro.classList.contains("sun")) return;
+  astro.classList.remove("moon");
+  astro.classList.add("sun");
+  astro.setAttribute("aria-label", "Soleil à déplacer");
+  updateView("Ya un grand soleil, on va pique-niquer");
+  sunInterval = window.setInterval(() => {
+    if (state.sunlight >= 100) return;
+    state.sunlight = clamp(state.sunlight + 5);
+    saveState();
+    updateView();
+  }, 1200);
+}
+
+let astroDragging = false;
+let astroMoved = false;
+let astroStartX = 0;
+let astroStartY = 0;
+let astroStartLeft = 0;
+let astroStartTop = 0;
+
+astro.addEventListener("pointerdown", (event) => {
+  astroDragging = true;
+  astroMoved = false;
+  astroStartX = event.clientX;
+  astroStartY = event.clientY;
+  astroStartLeft = astro.offsetLeft;
+  astroStartTop = astro.offsetTop;
+  astro.setPointerCapture(event.pointerId);
+  astro.classList.add("is-dragging");
+});
+
+astro.addEventListener("pointermove", (event) => {
+  if (!astroDragging) return;
+  const nextLeft = astroStartLeft + event.clientX - astroStartX;
+  const nextTop = astroStartTop + event.clientY - astroStartY;
+  const maxLeft = sky.clientWidth - astro.offsetWidth;
+  const maxTop = sky.clientHeight - astro.offsetHeight;
+  astro.style.left = `${Math.max(0, Math.min(maxLeft, nextLeft))}px`;
+  astro.style.top = `${Math.max(0, Math.min(maxTop, nextTop))}px`;
+  astro.style.right = "auto";
+  astroMoved = Math.abs(event.clientX - astroStartX) > 6 || Math.abs(event.clientY - astroStartY) > 6;
+  if (astroMoved) startSun();
+});
+
+astro.addEventListener("pointerup", () => {
+  if (!astroDragging) return;
+  astroDragging = false;
+  astro.classList.remove("is-dragging");
+  if (!astroMoved) startSun();
+});
+
+astro.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    startSun();
+  }
+});
 
 updateView();

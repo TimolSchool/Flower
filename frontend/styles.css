@@ -34,7 +34,11 @@ h2 { margin-bottom: .15rem; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height:
 .card, .garden-card { border: 1px solid var(--line); border-radius: 1.5rem; box-shadow: var(--shadow); overflow: hidden; }
 .garden-card { position: relative; display: flex; flex-direction: column; min-height: 34rem; background: var(--paper); }
 .sky { position: absolute; inset: 0 0 auto; height: 17rem; overflow: hidden; background: linear-gradient(165deg, #d6eff0, #f8e9ce); }
-.sun { position: absolute; top: 2.5rem; right: 16%; width: 4rem; height: 4rem; border-radius: 50%; background: #ffd778; box-shadow: 0 0 0 1rem rgba(255, 215, 120, .16), 0 0 3rem rgba(255, 189, 81, .5); }
+.sky.raining::after { position: absolute; z-index: 4; inset: 0; content: ""; pointer-events: none; background: repeating-linear-gradient(105deg, transparent 0 1.1rem, rgba(91, 164, 190, .55) 1.15rem 1.25rem, transparent 1.3rem 2.2rem); animation: rain .8s linear 2; }
+.astro { position: absolute; z-index: 3; top: 2.5rem; right: 16%; width: 4rem; height: 4rem; border-radius: 50%; cursor: grab; touch-action: none; transition: background .3s, box-shadow .3s, transform .2s; }
+.astro.is-dragging { cursor: grabbing; transform: scale(1.08); }
+.astro.moon { background: #f5f1d5; box-shadow: -0.7rem .25rem 0 #cbd9d1, 0 0 0 1rem rgba(255, 255, 255, .12); }
+.astro.sun { background: #ffd778; box-shadow: 0 0 0 1rem rgba(255, 215, 120, .16), 0 0 3rem rgba(255, 189, 81, .5); }
 .cloud { position: absolute; z-index: 2; width: 5.5rem; height: 1.4rem; border-radius: 2rem; background: rgba(255, 255, 255, .7); cursor: grab; touch-action: none; transition: box-shadow .2s, transform .2s; }
 .cloud.is-dragging { cursor: grabbing; box-shadow: 0 .5rem 1rem rgba(61, 86, 76, .15); transform: scale(1.05); }
 .cloud::before, .cloud::after { position: absolute; content: ""; border-radius: 50%; background: inherit; }
@@ -101,6 +105,7 @@ h2 { margin-bottom: .15rem; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height:
 .tip { margin: 1.35rem 0 0; color: var(--muted); font: .8rem/1.45 "Trebuchet MS", sans-serif; }
 @keyframes sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
 @keyframes pop { 0% { opacity: .4; transform: translateY(4px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes rain { from { transform: translateY(-1.5rem); opacity: 0; } 25% { opacity: 1; } to { transform: translateY(1.5rem); opacity: 0; } }
 @media (max-width: 700px) { .page { width: calc(100% - 1rem); padding-top: 1rem; } .topbar { align-items: center; } .game { grid-template-columns: 1fr; } .garden-card { min-height: 31rem; } .flower-stage { min-height: 18rem; } .care-card { padding: 1.1rem; } }
 @media (max-width: 390px) { .topbar { display: block; } .sun-badge { width: max-content; margin-top: .8rem; } h1 { font-size: 2.3rem; } .garden-copy { padding: 1.15rem; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
