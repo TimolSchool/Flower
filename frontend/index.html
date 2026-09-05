@@ -4,51 +4,85 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#2f5d3a" />
-    <title>Le mot secret</title>
+    <title>Flower Care | Mon petit jardin</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <div class="page">
-      <header class="hero">
-        <p class="eyebrow">Jardin secret</p>
-        <h1>Trouve le mot</h1>
-        <p class="lede">
-          Choisis un mot, puis envoie-le au serveur. La vérification se fait
-          uniquement côté backend.
-        </p>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Jardin secret · Jour <span id="day">1</span></p>
+          <h1>Fais grandir ta fleur.</h1>
+        </div>
+        <div class="sun-badge" aria-label="Vitalité de la fleur">
+          <span aria-hidden="true">✿</span>
+          <strong id="health">72</strong>
+          <small>% vitalité</small>
+        </div>
       </header>
 
-      <main>
-        <form id="secret-form" class="card" autocomplete="off">
-          <label for="word">Mot secret</label>
-          <div class="field">
-            <input
-              id="word"
-              name="word"
-              type="text"
-              inputmode="text"
-              enterkeyhint="done"
-              maxlength="64"
-              placeholder="Écris ou sélectionne un mot"
-              list="word-ideas"
-              required
-              aria-describedby="hint"
-            />
-            <datalist id="word-ideas">
-              <option value="rosée"></option>
-              <option value="pétale"></option>
-              <option value="jardin"></option>
-              <option value="printemps"></option>
-              <option value="sève"></option>
-            </datalist>
+      <main class="game" aria-label="Jeu de soin de la fleur">
+        <section class="garden-card" aria-labelledby="flower-title">
+          <div class="sky" aria-hidden="true">
+            <span class="cloud cloud-one"></span>
+            <span class="cloud cloud-two"></span>
+            <span class="sun"></span>
           </div>
-          <p id="hint" class="hint">
-            Suggestions facultatives — le mot à trouver n’est pas forcément dans
-            la liste.
-          </p>
-          <button type="submit" id="submit">Vérifier</button>
-          <p id="result" class="result" role="status" aria-live="polite"></p>
-        </form>
+          <div class="flower-stage">
+            <div class="flower-shadow"></div>
+            <div class="flower" id="flower" aria-label="Ta fleur">
+              <div class="petals">
+                <span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div class="flower-center"></div>
+              <div class="stem"></div>
+              <div class="leaf leaf-left"></div>
+              <div class="leaf leaf-right"></div>
+            </div>
+            <div class="soil"></div>
+          </div>
+          <div class="garden-copy">
+            <p class="status-label" id="status-label">Elle a bonne mine</p>
+            <h2 id="flower-title">Bonjour, petite fleur.</h2>
+            <p id="result" class="result" role="status" aria-live="polite">
+              Un peu d’attention et elle s’épanouira.
+            </p>
+          </div>
+        </section>
+
+        <section class="card care-card" aria-labelledby="care-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Les soins du jour</p>
+              <h2 id="care-title">De quoi a-t-elle besoin ?</h2>
+            </div>
+            <span class="streak" id="streak">0 soin</span>
+          </div>
+
+          <div class="meters">
+            <div class="meter-row">
+              <div class="meter-label"><span aria-hidden="true">💧</span><strong>Eau</strong><span id="water-value">58%</span></div>
+              <div class="meter-track"><span id="water-bar" class="meter-fill water-fill"></span></div>
+            </div>
+            <div class="meter-row">
+              <div class="meter-label"><span aria-hidden="true">☀</span><strong>Lumière</strong><span id="sun-value">66%</span></div>
+              <div class="meter-track"><span id="sun-bar" class="meter-fill sun-fill"></span></div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="action-button water-action" id="water-button" type="button">
+              <span class="action-icon" aria-hidden="true">♒</span>
+              <span><strong>Arroser</strong><small>+18 eau</small></span>
+            </button>
+            <button class="action-button light-action" id="sun-button" type="button">
+              <span class="action-icon" aria-hidden="true">☼</span>
+              <span><strong>Au soleil</strong><small>+16 lumière</small></span>
+            </button>
+          </div>
+          <p class="tip" id="tip">Les deux jauges entre 40% et 85% donnent le meilleur équilibre.</p>
+        </section>
       </main>
     </div>
     <script src="/app.js"></script>

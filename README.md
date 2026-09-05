@@ -1,6 +1,8 @@
-# Flower — le mot secret
+# Flower — le petit jardin
 
-Site web responsive (téléphone et ordinateur) : un frontend pour choisir un mot, un backend pour le vérifier. Le mot attendu est défini **uniquement côté serveur** (`SECRET_WORD`, valeur par défaut `fleur`).
+Petit jeu web responsive dans lequel le joueur prend soin d'une fleur. Il peut l'arroser et lui donner de la lumière pour maintenir son équilibre et faire progresser sa vitalité.
+
+Le jeu et sa progression sont gérés côté frontend et sauvegardés dans le `localStorage` du navigateur. Le backend Express sert les fichiers statiques et conserve la route `/api/verify` disponible pour les évolutions futures.
 
 ## Lancer en local
 
@@ -11,7 +13,6 @@ npm start
 
 Ouvre [http://localhost:3000](http://localhost:3000).
 
-- `POST /api/verify` avec `{ "word": "…" }`
 - `GET /health` pour les sondes AWS
 
 ## Solutions AWS pour héberger ce site
@@ -76,4 +77,24 @@ Inutile pour l’instant : ce site est du HTML/CSS/JS statique + une API JSON.
 1. Pousse ce dépôt sur GitHub.
 2. Console AWS → App Runner → source GitHub ou image Docker.
 3. Commande de démarrage : `npm start` (ou image Docker, port **8080**).
-4. Variable d’environnement : `SECRET_WORD=fleur` (ne pas la mettre dans le frontend).
+4. Variable d’environnement : `SECRET_WORD=fleur` si la route API de vérification est utilisée.
+
+## Mettre à jour le jeu sur Lightsail
+
+Depuis la machine de développement :
+
+```bash
+git add .
+git commit -m "Mettre à jour le jeu"
+git push origin main
+```
+
+Puis sur le serveur :
+
+```bash
+cd ~/Flower
+git pull origin main
+sudo docker build -t flower .
+sudo docker rm -f flower 2>/dev/null || true
+sudo docker run -d --name flower --restart unless-stopped -p 80:8080 -e SECRET_WORD='fleur' flower
+```
