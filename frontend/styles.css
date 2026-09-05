@@ -40,8 +40,8 @@ h2 { margin-bottom: .15rem; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height:
 .cloud::before, .cloud::after { position: absolute; content: ""; border-radius: 50%; background: inherit; }
 .cloud::before { width: 2.2rem; height: 2.2rem; left: .8rem; bottom: .3rem; }
 .cloud::after { width: 1.5rem; height: 1.5rem; left: 2.8rem; bottom: .25rem; }
-.cloud-one { top: 4.5rem; left: 12%; }
-.cloud-two { top: 8rem; right: 9%; transform: scale(.65); opacity: .65; }
+.cloud-one { top: 6rem; left: calc(50% - 2.75rem); }
+.cloud-two { top: 4.5rem; left: 10%; transform: scale(.65); opacity: .65; }
 .flower-stage { position: relative; z-index: 1; display: grid; place-items: end center; flex: 1; min-height: 20rem; padding-top: 9rem; }
 .soil { width: 72%; height: 2.3rem; border-radius: 50% 50% 45% 45%; background: #9a684a; box-shadow: inset 0 .45rem #83533d, 0 .3rem 0 rgba(77, 61, 43, .1); }
 .seed { position: absolute; z-index: 3; bottom: 2rem; width: 1.55rem; height: 2.1rem; border-radius: 65% 35% 55% 45%; background: #805337; transform: rotate(24deg); box-shadow: inset -.25rem -.2rem #65412e; transition: opacity .4s, transform .5s; }

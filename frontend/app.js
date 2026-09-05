@@ -91,12 +91,14 @@ function updateView(message) {
 function moveCloud(cloud) {
   let dragging = false;
   let moved = false;
+  let sunlightGranted = false;
   let startX = 0;
   let startLeft = 0;
 
   cloud.addEventListener("pointerdown", (event) => {
     dragging = true;
     moved = false;
+    sunlightGranted = false;
     startX = event.clientX;
     startLeft = cloud.offsetLeft;
     cloud.setPointerCapture(event.pointerId);
@@ -111,6 +113,17 @@ function moveCloud(cloud) {
     if (Math.abs(nextLeft - startLeft) > 8) moved = true;
     cloud.style.left = `${boundedLeft}px`;
     cloud.style.right = "auto";
+
+    const cloudCenter = boundedLeft + cloud.offsetWidth / 2;
+    const flowerCenter = sky.clientWidth / 2;
+    const isOverFlower = Math.abs(cloudCenter - flowerCenter) < sky.clientWidth * 0.18;
+    if (moved && !isOverFlower && !sunlightGranted) {
+      sunlightGranted = true;
+      state.sunlight = clamp(state.sunlight + 20);
+      state.careCount += 1;
+      saveState();
+      updateView("Ya un grand soleil, on va pique-niquer");
+    }
   });
 
   cloud.addEventListener("pointerup", () => {
@@ -118,20 +131,13 @@ function moveCloud(cloud) {
     dragging = false;
     cloud.classList.remove("is-dragging");
     if (!moved) return;
-    const cloudCenter = cloud.offsetLeft + cloud.offsetWidth / 2;
-    const flowerCenter = sky.clientWidth / 2;
-    const isOverFlower = Math.abs(cloudCenter - flowerCenter) < sky.clientWidth * 0.18;
-    const message = isOverFlower
-      ? "Il est important de boire régulièrement"
-      : "Ya un grand soleil, on va pique-niquer";
-    if (isOverFlower) {
+    if (!moved) {
       state.water = clamp(state.water + 20);
-    } else {
-      state.sunlight = clamp(state.sunlight + 20);
+      state.careCount += 1;
+      saveState();
+      updateView("Il est important de boire régulièrement");
+      return;
     }
-    state.careCount += 1;
-    saveState();
-    updateView(message);
   });
 }
 
